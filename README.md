@@ -26,13 +26,9 @@ Proyek ini dibuat untuk latihan memahami dasar CRUD (Create, Read, Update, Delet
 
 ---
 
-## 📂 Struktur Project
+## 📂 Project
 
-/kontakku
-│── index.html
-│── style.css
-│── script.js
-└── images/
+Link Project : https://sahrilbs.vercel.app/index.html
 
 ---
 
