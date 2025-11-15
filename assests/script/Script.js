@@ -1,4 +1,4 @@
-// Ambil elemen-elemen DOM yang dibutuhkan
+// Ambil elemen DOM
 const contactForm = document.getElementById("contact-form");
 const contactIdInput = document.getElementById("contact-id");
 const nameInput = document.getElementById("name");
@@ -8,96 +8,80 @@ const saveBtn = document.getElementById("save-btn");
 const resetBtn = document.getElementById("reset-btn");
 const contactsTableBody = document.querySelector("#contacts-table tbody");
 const countSpan = document.getElementById("count");
+
 const STORAGE_KEY = "addressBooksContacts";
 
-// --- FUNGSI UTAMA ---
-
-// 1. Ambil data kontak dari LocalStorage
+// ------------------------------
+// Fungsi ambil data dari localStorage
 function getContacts() {
-  const contactsJSON = localStorage.getItem(STORAGE_KEY); // Kembalikan array kosong jika tidak ada data
-  return contactsJSON ? JSON.parse(contactsJSON) : [];
+  const json = localStorage.getItem(STORAGE_KEY);
+  return json ? JSON.parse(json) : [];
 }
 
-// 2. Simpan data kontak ke LocalStorage
-function saveContacts(contacts) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+// Fungsi simpan kontak
+function saveContacts(list) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
 }
 
-// 3. Render (tampilkan) daftar kontak
+// ------------------------------
+// Render list kontak
 function renderContacts() {
-  const contacts = getContacts(); // Kosongkan isi tabel sebelum diisi ulang
+  const contacts = getContacts();
+  contactsTableBody.innerHTML = "";
 
-  contactsTableBody.innerHTML = ""; // Update jumlah kontak
-
-  countSpan.textContent = `${contacts.length} kontak`; // Jika tidak ada kontak, tampilkan pesan
+  countSpan.textContent = `${contacts.length} kontak`;
 
   if (contacts.length === 0) {
-    const noDataRow = `
-            <tr>
-                <td colspan="4" class="p-3 text-center text-gray-500 dark:text-gray-400">
-                    Belum ada kontak yang tersimpan.
-                </td>
-            </tr>
-        `;
-    contactsTableBody.innerHTML = noDataRow;
+    contactsTableBody.innerHTML = `
+      <tr>
+        <td colspan="4" class="p-3 text-center text-gray-500 dark:text-gray-400">
+          Belum ada kontak yang tersimpan.
+        </td>
+      </tr>`;
     return;
-  } // Iterasi melalui setiap kontak dan buat baris tabel
+  }
 
   contacts.forEach((contact) => {
     const row = document.createElement("tr");
-    row.classList.add(
-      "border-b",
-      "dark:border-gray-700",
-      "hover:bg-gray-50",
-      "dark:hover:bg-gray-700/50",
-      "transition"
-    );
+    row.className =
+      "border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition";
+
     row.innerHTML = `
-            <td class="p-3 font-medium">${contact.name}</td>
-            <td class="p-3">${contact.phone}</td>
-            <td class="p-3">${contact.address || "-"}</td>
-            <td class="p-3 flex space-x-2">
-                <button 
-                    class="edit-btn text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition text-sm" 
-                    data-id="${contact.id}"
-                    type="button"
-                >
-                    Edit
-                </button>
-                <button 
-                    class="delete-btn text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition text-sm" 
-                    data-id="${contact.id}"
-                    type="button"
-                >
-                    Hapus
-                </button>
-            </td>
-        `;
+      <td class="p-3 font-medium">${contact.name}</td>
+      <td class="p-3">${contact.phone}</td>
+      <td class="p-3">${contact.address || "-"}</td>
+      <td class="p-3 flex gap-3">
+        <button 
+          class="edit-btn text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm"
+          data-id="${contact.id}">
+          Edit
+        </button>
+
+        <button 
+          class="delete-btn text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm"
+          data-id="${contact.id}">
+          Hapus
+        </button>
+      </td>
+    `;
+
     contactsTableBody.appendChild(row);
-  }); // Tambahkan event listener untuk tombol edit dan hapus setelah rendering
-
-  document.querySelectorAll(".edit-btn").forEach((button) => {
-    button.addEventListener("click", handleEdit);
   });
-  document.querySelectorAll(".delete-btn").forEach((button) => {
-    button.addEventListener("click", handleDelete);
+
+  // Add listeners
+  document.querySelectorAll(".edit-btn").forEach((btn) => {
+    btn.addEventListener("click", handleEdit);
+  });
+
+  document.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", handleDelete);
   });
 }
 
-// 4. Reset formulir dan ubah tampilan tombol
-function resetForm() {
-  contactForm.reset();
-  contactIdInput.value = ""; // Hapus ID yang tersimpan
-  saveBtn.textContent = "Tambah Kontak";
-  saveBtn.classList.remove("bg-green-600", "hover:bg-green-700");
-  saveBtn.classList.add("bg-blue-600", "hover:bg-blue-700");
-}
-
-// --- HANDLER EVENT ---
-
-// 1. Handle form submit (Tambah atau Edit)
-function handleSubmit(event) {
-  event.preventDefault();
+// ------------------------------
+// Submit handler
+function handleSubmit(e) {
+  e.preventDefault();
 
   const id = contactIdInput.value;
   const name = nameInput.value.trim();
@@ -105,77 +89,76 @@ function handleSubmit(event) {
   const address = addressInput.value.trim();
 
   if (!name || !phone) {
-    alert("Nama dan Telepon wajib diisi!");
+    alert("Nama dan telepon wajib diisi!");
     return;
   }
 
-  const newContact = { name, phone, address };
   let contacts = getContacts();
 
   if (id) {
-    // Mode Edit: Cari kontak dan perbarui datanya
-    contacts = contacts.map((contact) =>
-      contact.id === id ? { ...contact, ...newContact } : contact
+    contacts = contacts.map((c) =>
+      c.id === id ? { ...c, name, phone, address } : c
     );
     alert("Kontak berhasil diperbarui!");
   } else {
-    // Mode Tambah: Beri ID unik dan tambahkan ke array
-    newContact.id = Date.now().toString(); // ID unik sederhana
+    const newContact = {
+      id: Date.now().toString(),
+      name,
+      phone,
+      address,
+    };
     contacts.push(newContact);
     alert("Kontak berhasil ditambahkan!");
   }
 
   saveContacts(contacts);
   resetForm();
-  renderContacts(); // <<== Bagian ini memastikan tabel diperbarui
+  renderContacts();
 }
 
-// 2. Handle Edit
-function handleEdit(event) {
-  const idToEdit = event.target.dataset.id;
-  const contacts = getContacts();
-  const contactToEdit = contacts.find((c) => c.id === idToEdit);
+// Edit handler
+function handleEdit(e) {
+  const id = e.target.dataset.id;
+  const contact = getContacts().find((c) => c.id === id);
 
-  if (contactToEdit) {
-    // Isi form dengan data kontak
-    contactIdInput.value = contactToEdit.id;
-    nameInput.value = contactToEdit.name;
-    phoneInput.value = contactToEdit.phone;
-    addressInput.value = contactToEdit.address; // Ubah teks dan warna tombol
+  if (!contact) return;
 
-    saveBtn.textContent = "Simpan Perubahan";
-    saveBtn.classList.remove("bg-blue-600", "hover:bg-blue-700");
-    saveBtn.classList.add("bg-green-600", "hover:bg-green-700"); // Gulir ke formulir
+  contactIdInput.value = contact.id;
+  nameInput.value = contact.name;
+  phoneInput.value = contact.phone;
+  addressInput.value = contact.address;
 
-    contactForm.scrollIntoView({ behavior: "smooth" });
-  }
+  saveBtn.textContent = "Simpan Perubahan";
+  saveBtn.classList.remove("bg-blue-600");
+  saveBtn.classList.add("bg-green-600");
+
+  contactForm.scrollIntoView({ behavior: "smooth" });
 }
 
-// 3. Handle Delete
-function handleDelete(event) {
-  const idToDelete = event.target.dataset.id;
+// Delete handler
+function handleDelete(e) {
+  const id = e.target.dataset.id;
 
   if (confirm("Yakin ingin menghapus kontak ini?")) {
-    let contacts = getContacts(); // Filter array untuk menghapus kontak dengan ID yang sesuai
-    contacts = contacts.filter((contact) => contact.id !== idToDelete);
-
+    let contacts = getContacts();
+    contacts = contacts.filter((c) => c.id !== id);
     saveContacts(contacts);
-    renderContacts(); // <<== Bagian ini memastikan tabel diperbarui setelah dihapus
+    renderContacts();
     alert("Kontak berhasil dihapus!");
   }
 }
 
-// 4. Handle Reset Button
-function handleResetClick() {
-  resetForm();
+// Reset form
+function resetForm() {
+  contactForm.reset();
+  contactIdInput.value = "";
+  saveBtn.textContent = "Tambah Kontak";
+  saveBtn.classList.remove("bg-green-600");
+  saveBtn.classList.add("bg-blue-600");
 }
 
-// --- INISIALISASI (Run saat halaman dimuat) ---
-document.addEventListener("DOMContentLoaded", () => {
-  // 1. Tampilkan kontak yang sudah ada saat halaman dimuat
-  renderContacts(); // <<== Bagian ini memastikan kontak muncul saat pertama kali load
-});
+// Inisialisasi
+document.addEventListener("DOMContentLoaded", renderContacts);
 
-// --- PASANG EVENT LISTENERS ---
 contactForm.addEventListener("submit", handleSubmit);
-resetBtn.addEventListener("click", handleResetClick);
+resetBtn.addEventListener("click", resetForm);
