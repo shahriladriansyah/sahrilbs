@@ -3,59 +3,98 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>KontakKu — Address Book</title>
+    <title>Address Books — Kontak</title>
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Konfigurasi Tailwind: aktifin dark mode pakai class -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+
+    <!-- Custom CSS (opsional) -->
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body class="bg-gray-100 text-gray-900">
+  <body
+    class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300"
+  >
     <div class="max-w-3xl mx-auto p-6">
+      <!-- HEADER -->
       <header class="mb-8">
-        <h1 class="text-4xl font-bold tracking-tight">KontakKu</h1>
-        <p class="mt-1 text-gray-500">
-          Bikin nyimpen kontak jadi gampang banget — tinggal klik, langsung
-          ke-save di localStorage.
-        </p>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h1 class="text-4xl font-bold tracking-tight">Address Books</h1>
+            <p class="mt-1 text-gray-500 dark:text-gray-400">
+              Simpan kontakmu dengan mudah — data langsung ke-save di
+              localStorage.
+            </p>
+          </div>
+
+          <!-- DARK MODE BUTTON DI KANAN -->
+          <button
+            id="theme-toggle"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-800 text-white text-sm hover:bg-gray-700 transition dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+            type="button"
+          >
+            <span id="theme-icon">🌙</span>
+            <span id="theme-text">Mode Malam</span>
+          </button>
+        </div>
       </header>
 
+      <!-- FORM INPUT -->
       <section
-        class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200"
+        class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700"
       >
         <form id="contact-form" class="space-y-5">
           <input type="hidden" id="contact-id" />
 
           <div>
-            <label class="text-sm font-medium text-gray-700">Nama</label>
+            <label
+              for="name"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >Nama</label
+            >
             <input
               type="text"
               id="name"
               placeholder="Nama lengkap"
               required
-              class="mt-1 w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              class="mt-1 w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
 
           <div>
-            <label class="text-sm font-medium text-gray-700">Telepon</label>
+            <label
+              for="phone"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >Telepon</label
+            >
             <input
               type="tel"
               id="phone"
               placeholder="08xxxxxxxxxx"
               required
               pattern="[0-9+\\-\\s]+"
-              class="mt-1 w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              class="mt-1 w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
 
           <div>
-            <label class="text-sm font-medium text-gray-700">Alamat</label>
+            <label
+              for="address"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >Alamat</label
+            >
             <input
               type="text"
               id="address"
               placeholder="Alamat (opsional)"
-              class="mt-1 w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              class="mt-1 w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
 
@@ -71,7 +110,7 @@
             <button
               type="button"
               id="reset-btn"
-              class="px-4 py-2.5 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition"
+              class="px-4 py-2.5 bg-gray-200 dark:bg-gray-600 dark:text-white text-gray-700 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-500 transition"
             >
               Reset
             </button>
@@ -81,34 +120,97 @@
 
       <!-- LIST DATA -->
       <section
-        class="mt-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-200"
+        class="mt-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700"
       >
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold">Daftar Kontak</h2>
-          <span id="count" class="text-gray-500 text-sm">0 kontak</span>
+          <span id="count" class="text-gray-500 dark:text-gray-400 text-sm"
+            >0 kontak</span
+          >
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full border-collapse" id="contacts-table">
             <thead>
-              <tr class="text-left bg-gray-50 border-b">
-                <th class="p-3 text-sm font-medium text-gray-600">Nama</th>
-                <th class="p-3 text-sm font-medium text-gray-600">Telepon</th>
-                <th class="p-3 text-sm font-medium text-gray-600">Alamat</th>
-                <th class="p-3 text-sm font-medium text-gray-600">Aksi</th>
+              <tr
+                class="text-left bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600"
+              >
+                <th
+                  class="p-3 text-sm font-medium text-gray-600 dark:text-gray-200"
+                >
+                  Nama
+                </th>
+                <th
+                  class="p-3 text-sm font-medium text-gray-600 dark:text-gray-200"
+                >
+                  Telepon
+                </th>
+                <th
+                  class="p-3 text-sm font-medium text-gray-600 dark:text-gray-200"
+                >
+                  Alamat
+                </th>
+                <th
+                  class="p-3 text-sm font-medium text-gray-600 dark:text-gray-200"
+                >
+                  Aksi
+                </th>
               </tr>
             </thead>
             <tbody class="text-sm"></tbody>
           </table>
         </div>
 
-        <p class="mt-4 text-gray-500 text-sm">
+        <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm">
           Data disimpan di browser memakai <b>localStorage</b>. Jika kamu clear
-          cache atau hapus data situs → seluruh kontak ikut terhapus.
+          cache atau hapus data situs, semua kontak bakal hilang.
         </p>
       </section>
     </div>
 
-    <script src="assests/script/Script.js"></script>
+    <!-- Dark Mode Script -->
+    <script>
+      const toggleBtn = document.getElementById("theme-toggle");
+      const html = document.documentElement;
+      const themeIcon = document.getElementById("theme-icon");
+      const themeText = document.getElementById("theme-text");
+
+      // Cek preferensi tema dari localStorage
+      const savedTheme = localStorage.getItem("theme");
+
+      function setToDark() {
+        html.classList.add("dark");
+        themeIcon.textContent = "🌞"; // karena sekarang gelap, icon buat ke siang
+        themeText.textContent = "Mode Siang";
+        localStorage.setItem("theme", "dark");
+      }
+
+      function setToLight() {
+        html.classList.remove("dark");
+        themeIcon.textContent = "🌙"; // karena sekarang terang, icon buat ke malam
+        themeText.textContent = "Mode Malam";
+        localStorage.setItem("theme", "light");
+      }
+
+      // Inisialisasi awal
+      if (savedTheme === "dark") {
+        setToDark();
+      } else {
+        setToLight();
+      }
+
+      // Toggle on click
+      toggleBtn.addEventListener("click", () => {
+        const isDark = html.classList.contains("dark");
+        if (isDark) {
+          setToLight();
+        } else {
+          setToDark();
+        }
+      });
+    </script>
+
+    <!-- Script utama untuk kontak -->
+    <script src="assets/script/script.js"></script>
   </body>
 </html>
