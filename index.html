@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Address Book</title>
 
-    <!-- Tailwind -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Font Inter -->
@@ -30,10 +30,8 @@
             colors: {
               primary: "#2563EB",
               primaryDark: "#1D4ED8",
-
               lightBg: "#F5F6F8",
               lightCard: "#FFFFFF",
-
               darkBg: "#0F172A",
               darkCard: "#1E293B",
               darkBorder: "#334155",
@@ -51,14 +49,24 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
+        background-image: url("assets/images/bg.jpg"); /* ganti sesuai path */
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-image: url("assest/gambar/bg.jpg"); /* background gelap */
+        }
       }
     </style>
   </head>
 
-  <body
-    class="bg-lightBg dark:bg-darkBg text-gray-800 dark:text-gray-100 min-h-screen"
-  >
-    <div class="container max-w-3xl pt-10 pb-20">
+  <body class="min-h-screen relative text-gray-800 dark:text-gray-100">
+    <!-- Overlay semi-transparent -->
+    <div class="absolute inset-0 bg-black opacity-20 dark:opacity-30 z-0"></div>
+
+    <div class="relative z-10 container max-w-3xl pt-10 pb-20">
       <!-- Header -->
       <header class="flex justify-between items-center mb-10">
         <h1 class="text-3xl font-bold tracking-tight">Address Book</h1>
@@ -168,7 +176,6 @@
                 <th class="py-3 px-4 text-left text-xs uppercase">Actions</th>
               </tr>
             </thead>
-
             <tbody
               id="contactList"
               class="divide-y divide-gray-200 dark:divide-darkBorder"
@@ -180,10 +187,10 @@
       </div>
     </div>
 
+    <!-- Dark Mode Script -->
     <script>
       const themeToggle = document.getElementById("themeToggle");
       const html = document.documentElement;
-
       const sun = themeToggle.querySelector(".fa-sun");
       const moon = themeToggle.querySelector(".fa-moon");
 
@@ -212,6 +219,8 @@
         html.classList.contains("dark") ? disableDark() : enableDark();
       });
     </script>
-    <script src="assests/script/Script.js"></script>
+
+    <!-- Main Script -->
+    <script src="assets/script/Script.js"></script>
   </body>
 </html>
