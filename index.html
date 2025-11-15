@@ -5,17 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Address Books — Kontak</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Konfigurasi Tailwind: aktifin dark mode pakai class -->
     <script>
       tailwind.config = {
         darkMode: "class",
       };
     </script>
 
-    <!-- Custom CSS (opsional) -->
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -34,7 +31,7 @@
             </p>
           </div>
 
-          <!-- DARK MODE BUTTON DI KANAN -->
+          <!-- DARK MODE BUTTON -->
           <button
             id="theme-toggle"
             class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-800 text-white text-sm hover:bg-gray-700 transition dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
@@ -79,7 +76,7 @@
               id="phone"
               placeholder="08xxxxxxxxxx"
               required
-              pattern="[0-9+\\-\\s]+"
+              pattern="[0-9+\-\s]+"
               class="mt-1 w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
@@ -162,55 +159,43 @@
         </div>
 
         <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm">
-          Data disimpan di browser memakai <b>localStorage</b>. Jika kamu clear
-          cache atau hapus data situs, semua kontak bakal hilang.
+          Data disimpan di browser memakai <b>localStorage</b>.
         </p>
       </section>
     </div>
 
-    <!-- Dark Mode Script -->
+    <!-- DARK MODE SCRIPT -->
     <script>
       const toggleBtn = document.getElementById("theme-toggle");
       const html = document.documentElement;
       const themeIcon = document.getElementById("theme-icon");
       const themeText = document.getElementById("theme-text");
 
-      // Cek preferensi tema dari localStorage
       const savedTheme = localStorage.getItem("theme");
 
       function setToDark() {
         html.classList.add("dark");
-        themeIcon.textContent = "🌞"; // karena sekarang gelap, icon buat ke siang
+        themeIcon.textContent = "🌞";
         themeText.textContent = "Mode Siang";
         localStorage.setItem("theme", "dark");
       }
 
       function setToLight() {
         html.classList.remove("dark");
-        themeIcon.textContent = "🌙"; // karena sekarang terang, icon buat ke malam
+        themeIcon.textContent = "🌙";
         themeText.textContent = "Mode Malam";
         localStorage.setItem("theme", "light");
       }
 
-      // Inisialisasi awal
-      if (savedTheme === "dark") {
-        setToDark();
-      } else {
-        setToLight();
-      }
+      if (savedTheme === "dark") setToDark();
+      else setToLight();
 
-      // Toggle on click
       toggleBtn.addEventListener("click", () => {
-        const isDark = html.classList.contains("dark");
-        if (isDark) {
-          setToLight();
-        } else {
-          setToDark();
-        }
+        html.classList.contains("dark") ? setToLight() : setToDark();
       });
     </script>
 
-    <!-- Script utama untuk kontak -->
+    <!-- SCRIPT KONTAK (PASTIIN PATH BETUL!) -->
     <script src="assets/script/script.js"></script>
   </body>
 </html>
