@@ -2,87 +2,167 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Kontak</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+    <style>
+      body {
+        font-family: Inter, sans-serif;
+        background-image: url("assest/gambar/bg2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        margin: 0;
+      }
+      .card {
+        transition: background-color 0.3s, color 0.3s;
+        background-color: rgba(255, 255, 255, 0.95);
+        color: #111827;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+      .dark .card {
+        background-color: #1f2937;
+        color: #f1f5f9;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 1.1rem 1.2rem;
+        font-size: 1.05rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        background-color: #f9fafb;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+      }
+      textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+      .dark input,
+      .dark textarea {
+        background-color: #374151;
+        color: #f1f5f9;
+        border: 1px solid #4b5563;
+      }
+      .btn {
+        padding: 0.7rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .btn-blue {
+        background-color: #2563eb;
+        color: #fff;
+      }
+      .btn-blue:hover {
+        background-color: #1d4ed8;
+      }
+      .btn-gray {
+        background-color: #6b7280;
+        color: #fff;
+      }
+      .btn-gray:hover {
+        background-color: #4b5563;
+      }
+      .theme-toggle {
+        padding: 0.5rem;
+        border-radius: 50%;
+        background-color: #e5e7eb;
+        color: #111827;
+        cursor: pointer;
+      }
+      .dark .theme-toggle {
+        background-color: #374151;
+        color: #facc15;
+      }
+    </style>
   </head>
+  <body class="text-gray-900 dark:text-white">
+    <div class="max-w-xl mx-auto mt-6 flex justify-end">
+      <button id="themeToggle" class="theme-toggle">
+        <i class="fas fa-moon hidden"></i>
+        <i class="fas fa-sun hidden"></i>
+      </button>
+    </div>
 
-  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-    <div
-      class="max-w-xl mx-auto mt-10 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl"
-    >
+    <div class="max-w-xl mx-auto mt-6 card">
       <h1 class="text-3xl font-bold mb-6 text-center">Edit Kontak</h1>
+      <form id="editContactForm" class="space-y-3">
+        <input
+          id="editName"
+          type="text"
+          placeholder="Nama"
+          class="w-full border rounded-md px-3 py-2 text-sm dark:bg-darkCard"
+          required
+        />
+        <input
+          id="editPhone"
+          type="text"
+          placeholder="Nomor Telepon"
+          class="w-full border rounded-md px-3 py-2 text-sm dark:bg-darkCard"
+          required
+        />
+        <input
+          id="editEmail"
+          type="email"
+          placeholder="Email"
+          class="w-full border rounded-md px-3 py-2 text-sm dark:bg-darkCard"
+        />
+        <textarea
+          id="editAddress"
+          placeholder="Alamat"
+          class="w-full border rounded-md px-3 py-2 text-sm dark:bg-darkCard"
+        ></textarea>
 
-      <form id="editContactForm" class="space-y-4">
-        <div>
-          <label class="block font-medium mb-1">Nama</label>
-          <input
-            id="editName"
-            type="text"
-            class="w-full p-3 border rounded-lg dark:bg-gray-700"
-            required
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1">Nomor Telepon</label>
-          <input
-            id="editPhone"
-            type="text"
-            class="w-full p-3 border rounded-lg dark:bg-gray-700"
-            required
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1">Email</label>
-          <input
-            id="editEmail"
-            type="email"
-            class="w-full p-3 border rounded-lg dark:bg-gray-700"
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1">Alamat</label>
-          <textarea
-            id="editAddress"
-            class="w-full p-3 border rounded-lg dark:bg-gray-700"
-          ></textarea>
-        </div>
-
-        <div class="flex justify-between items-center mt-6">
-          <a
-            href="index.html"
-            class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+        <div class="flex justify-end mt-4 gap-3">
+          <a href="index.html" class="btn btn-gray text-sm px-3 py-1.5"
+            >Batal</a
           >
-            Batal
-          </a>
-
-          <div class="flex gap-3">
-            <button
-              id="deleteBtn"
-              type="button"
-              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-            >
-              <i class="fas fa-trash"></i> Delete
-            </button>
-
-            <button
-              type="submit"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              <i class="fas fa-save"></i> Update
-            </button>
-          </div>
+          <button type="submit" class="btn btn-blue text-sm px-3 py-1.5">
+            <i class="fas fa-save"></i> Update
+          </button>
         </div>
       </form>
     </div>
+
+    <script>
+      const themeToggle = document.getElementById("themeToggle");
+      const html = document.documentElement;
+      const sun = themeToggle.querySelector(".fa-sun");
+      const moon = themeToggle.querySelector(".fa-moon");
+
+      function updateIcon() {
+        const isDark = html.classList.contains("dark");
+        sun.classList.toggle("hidden", !isDark);
+        moon.classList.toggle("hidden", isDark);
+      }
+
+      function enableDark() {
+        html.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+        updateIcon();
+      }
+
+      function disableDark() {
+        html.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+        updateIcon();
+      }
+
+      if (localStorage.getItem("theme") === "dark") enableDark();
+      else disableDark();
+
+      themeToggle.addEventListener("click", () => {
+        html.classList.contains("dark") ? disableDark() : enableDark();
+      });
+    </script>
 
     <script src="assests/script/Script.js"></script>
   </body>
