@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-background dark:bg-dark-background">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Address Book</title>
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Font Inter -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -22,45 +20,29 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
 
-    <!-- Tailwind Config -->
     <script>
       tailwind.config = {
         darkMode: "class",
         theme: {
-          container: {
-            center: true,
-            padding: "1.25rem",
-            screens: {
-              lg: "720px",
-              xl: "720px",
-            },
-          },
+          container: { center: true, padding: "1rem" },
           extend: {
+            fontFamily: { inter: ["Inter", "sans-serif"] },
             colors: {
               primary: "#2563EB",
-              secondary: "#64748B",
-              danger: "#EF4444",
-              muted: "#6B7280",
-              card: "#FFFFFF",
-              background: "#F3F4F6",
-              dark: {
-                background: "#111827",
-                card: "#1F2937",
-                text: "#F9FAFB",
-                border: "#374151",
-              },
-            },
-            borderRadius: {
-              soft: "14px",
-              xl2: "20px",
+              primaryDark: "#1D4ED8",
+
+              lightBg: "#F5F6F8",
+              lightCard: "#FFFFFF",
+
+              darkBg: "#0F172A",
+              darkCard: "#1E293B",
+              darkBorder: "#334155",
             },
             boxShadow: {
-              smooth: "0 8px 22px rgba(0,0,0,0.06)",
-              soft: "0 4px 14px rgba(0,0,0,0.04)",
+              smooth: "0 8px 20px rgba(0,0,0,0.05)",
+              smoothDark: "0 8px 20px rgba(0,0,0,0.2)",
             },
-            fontFamily: {
-              inter: ["Inter", "sans-serif"],
-            },
+            borderRadius: { soft: "16px" },
           },
         },
       };
@@ -69,94 +51,91 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
-        transition: background-color 0.3s ease, color 0.3s ease;
       }
     </style>
   </head>
 
   <body
-    class="bg-background dark:bg-dark-background text-gray-800 dark:text-dark-text"
+    class="bg-lightBg dark:bg-darkBg text-gray-800 dark:text-gray-100 min-h-screen"
   >
-    <div class="container max-w-3xl mt-8">
-      <!-- HEADER -->
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold flex-1 text-center">Address Book</h1>
+    <div class="container max-w-3xl pt-10 pb-20">
+      <!-- Header -->
+      <header class="flex justify-between items-center mb-10">
+        <h1 class="text-3xl font-bold tracking-tight">Address Book</h1>
 
-        <!-- DARK MODE TOGGLE -->
+        <!-- Dark Mode Toggle -->
         <button
           id="themeToggle"
-          class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-yellow-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          class="p-3 rounded-full bg-gray-200 dark:bg-darkCard text-gray-800 dark:text-yellow-300 shadow"
         >
+          <i class="fas fa-moon hidden"></i>
           <i class="fas fa-sun hidden"></i>
-          <i class="fas fa-moon"></i>
         </button>
-      </div>
+      </header>
 
-      <!-- FORM ADD CONTACT -->
-      <div class="bg-card dark:bg-dark-card rounded-xl shadow-smooth p-6 mb-6">
-        <div
-          class="bg-primary text-white dark:bg-blue-600 rounded-t-xl p-4 -mt-6 -mx-6 rounded-b-none"
-        >
-          <h5 class="text-lg font-semibold flex items-center gap-2">
+      <!-- Add Contact Card -->
+      <div
+        class="bg-lightCard dark:bg-darkCard shadow-smooth dark:shadow-smoothDark rounded-soft overflow-hidden mb-8"
+      >
+        <div class="bg-primary dark:bg-primaryDark p-4">
+          <h2 class="text-white font-semibold flex items-center gap-2">
             <i class="fas fa-user-plus"></i> Add New Contact
-          </h5>
+          </h2>
         </div>
 
-        <div class="p-4">
-          <form id="contactForm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-5">
+          <form id="contactForm" class="grid gap-4">
+            <div class="grid md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium mb-1">Name</label>
+                <label class="text-sm font-medium">Name</label>
                 <input
-                  type="text"
                   id="name"
                   required
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-lg focus:ring-2 focus:ring-primary"
+                  class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-darkBorder bg-white dark:bg-darkCard focus:ring-2 focus:ring-primary"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium mb-1">Phone</label>
+                <label class="text-sm font-medium">Phone</label>
                 <input
-                  type="tel"
                   id="phone"
+                  type="tel"
                   required
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-lg focus:ring-2 focus:ring-primary"
+                  class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-darkBorder bg-white dark:bg-darkCard focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+            <div class="grid md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium mb-1">Email</label>
+                <label class="text-sm font-medium">Email</label>
                 <input
-                  type="email"
                   id="email"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-lg focus:ring-2 focus:ring-primary"
+                  type="email"
+                  class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-darkBorder bg-white dark:bg-darkCard focus:ring-2 focus:ring-primary"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium mb-1">Address</label>
+                <label class="text-sm font-medium">Address</label>
                 <input
-                  type="text"
                   id="address"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-lg focus:ring-2 focus:ring-primary"
+                  class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-darkBorder bg-white dark:bg-darkCard focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
 
-            <div class="mt-4 flex gap-2">
+            <div class="flex gap-3 pt-2">
               <button
                 type="submit"
-                class="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
+                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
               >
-                <i class="fas fa-save"></i> Save Contact
+                <i class="fas fa-save"></i> Save
               </button>
 
               <button
                 type="reset"
-                class="flex items-center gap-2 bg-secondary hover:bg-gray-500 text-white px-4 py-2 rounded-lg transition"
+                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
               >
                 <i class="fas fa-undo"></i> Reset
               </button>
@@ -165,105 +144,69 @@
         </div>
       </div>
 
-      <!-- CONTACT LIST -->
-      <div class="bg-card dark:bg-dark-card rounded-xl shadow-smooth">
-        <div class="bg-blue-500 dark:bg-blue-600 text-white rounded-t-xl p-4">
-          <h5 class="text-lg font-semibold flex items-center gap-2">
+      <!-- Contact List -->
+      <div
+        class="bg-lightCard dark:bg-darkCard shadow-smooth dark:shadow-smoothDark rounded-soft overflow-hidden"
+      >
+        <div class="bg-primary dark:bg-primaryDark p-4">
+          <h2 class="text-white font-semibold flex items-center gap-2">
             <i class="fas fa-address-book"></i> Contact List
-          </h5>
+          </h2>
         </div>
 
-        <div class="p-4">
-          <div class="overflow-x-auto">
-            <table
-              class="min-w-full divide-y divide-gray-200 dark:divide-dark-border"
-              id="contactTable"
+        <div class="p-4 overflow-x-auto">
+          <table class="min-w-full">
+            <thead
+              class="bg-gray-200 dark:bg-darkBorder text-gray-700 dark:text-gray-200"
             >
-              <thead class="bg-gray-100 dark:bg-gray-700">
-                <tr>
-                  <th
-                    class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  >
-                    #
-                  </th>
-                  <th
-                    class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  >
-                    Name
-                  </th>
-                  <th
-                    class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  >
-                    Phone
-                  </th>
-                  <th
-                    class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  >
-                    Email
-                  </th>
-                  <th
-                    class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  >
-                    Address
-                  </th>
-                  <th
-                    class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
+              <tr>
+                <th class="py-3 px-4 text-left text-xs uppercase">#</th>
+                <th class="py-3 px-4 text-left text-xs uppercase">Name</th>
+                <th class="py-3 px-4 text-left text-xs uppercase">Phone</th>
+                <th class="py-3 px-4 text-left text-xs uppercase">Email</th>
+                <th class="py-3 px-4 text-left text-xs uppercase">Address</th>
+                <th class="py-3 px-4 text-left text-xs uppercase">Actions</th>
+              </tr>
+            </thead>
 
-              <tbody
-                id="contactList"
-                class="divide-y divide-gray-200 dark:divide-dark-border"
-              >
-                <!-- Dynamic Rows Here -->
-              </tbody>
-            </table>
-          </div>
+            <tbody
+              id="contactList"
+              class="divide-y divide-gray-200 dark:divide-darkBorder"
+            >
+              <!-- rows auto from JS -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- SCRIPT JS -->
-    <script src="script.js"></script>
-
-    <!-- DARK MODE FULL SCRIPT -->
     <script>
       const themeToggle = document.getElementById("themeToggle");
       const html = document.documentElement;
 
-      const sunIcon = themeToggle.querySelector(".fa-sun");
-      const moonIcon = themeToggle.querySelector(".fa-moon");
+      const sun = themeToggle.querySelector(".fa-sun");
+      const moon = themeToggle.querySelector(".fa-moon");
 
-      const updateIcons = () => {
+      function updateIcon() {
         const isDark = html.classList.contains("dark");
-        sunIcon.classList.toggle("hidden", !isDark);
-        moonIcon.classList.toggle("hidden", isDark);
-      };
-
-      const enableDark = () => {
-        html.classList.add("dark");
-        localStorage.setItem("color-theme", "dark");
-        updateIcons();
-      };
-
-      const disableDark = () => {
-        html.classList.remove("dark");
-        localStorage.setItem("color-theme", "light");
-        updateIcons();
-      };
-
-      if (
-        localStorage.getItem("color-theme") === "dark" ||
-        (!("color-theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        enableDark();
-      } else {
-        disableDark();
+        sun.classList.toggle("hidden", !isDark);
+        moon.classList.toggle("hidden", isDark);
       }
+
+      function enableDark() {
+        html.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+        updateIcon();
+      }
+
+      function disableDark() {
+        html.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+        updateIcon();
+      }
+
+      if (localStorage.getItem("theme") === "dark") enableDark();
+      else disableDark();
 
       themeToggle.addEventListener("click", () => {
         html.classList.contains("dark") ? disableDark() : enableDark();
