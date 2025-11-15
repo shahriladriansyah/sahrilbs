@@ -1,10 +1,6 @@
 // ------------------------------
-// Ambil elemen DOM
+// GLOBAL CONTACTS
 // ------------------------------
-const contactForm = document.getElementById("contactForm");
-const contactList = document.getElementById("contactList");
-
-// Ambil data dari localStorage saat halaman dimuat
 let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
 
 // ------------------------------
@@ -15,9 +11,12 @@ function saveToLocalStorage() {
 }
 
 // ------------------------------
-// Render Tabel Kontak
+// Render Tabel Kontak (index.html)
 // ------------------------------
 function renderContacts() {
+  const contactList = document.getElementById("contactList");
+  if (!contactList) return; // Jika bukan index.html
+
   contactList.innerHTML = "";
 
   contacts.forEach((contact, index) => {
@@ -36,11 +35,10 @@ function renderContacts() {
       <td class="px-4 py-3 text-sm">${addressDisplay}</td>
 
       <td class="px-4 py-3 text-sm font-medium flex gap-3">
-        <button 
-          class="text-blue-600 dark:text-blue-400 edit-btn"
-          data-index="${index}">
+        <a href="edit.html?id=${index}" 
+           class="text-blue-600 dark:text-blue-400">
           <i class="fas fa-edit"></i> Edit
-        </button>
+        </a>
 
         <button 
           class="text-red-600 dark:text-red-400 delete-btn"
@@ -53,90 +51,111 @@ function renderContacts() {
     contactList.appendChild(row);
   });
 
-  // Re-bind event tombol setiap kali render
-  attachActionButtons();
+  attachDeleteButtons();
 }
 
 // ------------------------------
-// Fungsi buat mengaktifkan tombol edit & delete
+// Aktifkan tombol Delete
 // ------------------------------
-function attachActionButtons() {
-  document.querySelectorAll(".edit-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const index = btn.dataset.index;
-      editContact(parseInt(index));
-    });
-  });
-
+function attachDeleteButtons() {
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const index = btn.dataset.index;
-      deleteContact(parseInt(index));
+
+      if (confirm("Yakin mau hapus kontak ini?")) {
+        contacts.splice(index, 1);
+        saveToLocalStorage();
+        renderContacts();
+      }
     });
   });
 }
 
 // ------------------------------
-// Tambah Kontak Baru
+// Tambah Kontak Baru (index.html)
 // ------------------------------
-contactForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+function initAddForm() {
+  const contactForm = document.getElementById("contactForm");
+  if (!contactForm) return; // Jika bukan index.html
 
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const address = document.getElementById("address").value.trim();
+  contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  if (!name || !phone) {
-    alert("Name dan Phone wajib diisi 😎");
-    return;
-  }
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const address = document.getElementById("address").value.trim();
 
-  contacts.push({ name, phone, email, address });
+    if (!name || !phone) {
+      alert("Name dan Phone wajib diisi 😎");
+      return;
+    }
 
-  saveToLocalStorage();
-  renderContacts();
-  contactForm.reset();
-});
+    contacts.push({ name, phone, email, address });
 
-// ------------------------------
-// Edit Kontak
-// ------------------------------
-function editContact(index) {
-  const contact = contacts[index];
-
-  document.getElementById("name").value = contact.name;
-  document.getElementById("phone").value = contact.phone;
-  document.getElementById("email").value = contact.email || "";
-  document.getElementById("address").value = contact.address || "";
-
-  // Hapus data lama, nanti ditambahkan ulang waktu submit form
-  contacts.splice(index, 1);
-
-  saveToLocalStorage();
-  renderContacts();
-
-  // Scroll ke form biar user langsung lihat inputnya
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
+    saveToLocalStorage();
+    renderContacts();
+    contactForm.reset();
   });
 }
 
 // ------------------------------
-// Hapus Kontak
+// LOAD DATA EDIT (edit.html)
 // ------------------------------
-function deleteContact(index) {
-  if (confirm("Yakin mau hapus? Nanti nyesel lho 😭")) {
-    contacts.splice(index, 1);
-    saveToLocalStorage();
-    renderContacts();
+function loadEditPage() {
+  const editForm = document.getElementById("editContactForm");
+  if (!editForm) return; // Jika bukan edit.html
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (id === null || !contacts[id]) {
+    alert("Kontak tidak ditemukan!");
+    window.location.href = "index.html";
+    return;
   }
+
+  const contact = contacts[id];
+
+  document.getElementById("editName").value = contact.name;
+  document.getElementById("editPhone").value = contact.phone;
+  document.getElementById("editEmail").value = contact.email || "";
+  document.getElementById("editAddress").value = contact.address || "";
+
+  // ------------------------------
+  // UPDATE KONTAK
+  // ------------------------------
+  editForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    contacts[id] = {
+      name: document.getElementById("editName").value.trim(),
+      phone: document.getElementById("editPhone").value.trim(),
+      email: document.getElementById("editEmail").value.trim(),
+      address: document.getElementById("editAddress").value.trim(),
+    };
+
+    saveToLocalStorage();
+    window.location.href = "index.html";
+  });
+
+  // ------------------------------
+  // DELETE DARI EDIT PAGE
+  // ------------------------------
+  document.getElementById("deleteBtn").addEventListener("click", () => {
+    if (confirm("Yakin mau hapus kontak ini?")) {
+      contacts.splice(id, 1);
+      saveToLocalStorage();
+      window.location.href = "index.html";
+    }
+  });
 }
 
 // ------------------------------
-// Render awal saat halaman di-load
+// AUTO DETECT HALAMAN
 // ------------------------------
 document.addEventListener("DOMContentLoaded", () => {
+  initAddForm();
   renderContacts();
+  loadEditPage();
 });
