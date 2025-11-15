@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edit Kontak</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div
+      class="max-w-xl mx-auto mt-10 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg"
+    >
+      <h1 class="text-2xl font-bold mb-6">Edit Kontak</h1>
+
+      <form id="editContactForm" class="space-y-4">
+        <div>
+          <label class="block font-medium">Nama</label>
+          <input
+            id="editName"
+            type="text"
+            class="w-full p-2 border rounded dark:bg-gray-700"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block font-medium">Nomor Telepon</label>
+          <input
+            id="editPhone"
+            type="text"
+            class="w-full p-2 border rounded dark:bg-gray-700"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block font-medium">Email</label>
+          <input
+            id="editEmail"
+            type="email"
+            class="w-full p-2 border rounded dark:bg-gray-700"
+          />
+        </div>
+
+        <div>
+          <label class="block font-medium">Alamat</label>
+          <textarea
+            id="editAddress"
+            class="w-full p-2 border rounded dark:bg-gray-700"
+          ></textarea>
+        </div>
+
+        <div class="flex justify-between mt-6">
+          <a
+            href="index.html"
+            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
+            Batal
+          </a>
+
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script src="script/edit.js"></script>
+  </body>
+</html>
