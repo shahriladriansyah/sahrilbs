@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./script.js"],
-
+  darkMode: "class", // Atau 'media' jika ingin otomatis berdasarkan sistem
   theme: {
     container: {
       center: true,
@@ -20,6 +20,12 @@ module.exports = {
         muted: "#6B7280", // gray teks kecil
         card: "#FFFFFF",
         background: "#F3F4F6",
+        dark: {
+          background: "#111827",
+          card: "#1F2937",
+          text: "#F9FAFB",
+          border: "#374151",
+        },
       },
 
       borderRadius: {
