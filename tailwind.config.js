@@ -1,7 +1,6 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./script.js"],
-  darkMode: "class", // Atau 'media' jika ingin otomatis berdasarkan sistem
+  content: ["./index.html", "./edit.html", "./assests/script/Script.js"],
+  darkMode: "class",
   theme: {
     container: {
       center: true,
@@ -11,13 +10,13 @@ module.exports = {
         xl: "720px",
       },
     },
-
     extend: {
       colors: {
-        primary: "#2563EB", // Biru modern
-        secondary: "#64748B", // Gray lembut
-        danger: "#EF4444", // Merah alert
-        muted: "#6B7280", // gray teks kecil
+        primary: "#2563EB",
+        primaryDark: "#1D4ED8",
+        secondary: "#64748B",
+        danger: "#EF4444",
+        muted: "#6B7280",
         card: "#FFFFFF",
         background: "#F3F4F6",
         dark: {
@@ -27,22 +26,18 @@ module.exports = {
           border: "#374151",
         },
       },
-
       borderRadius: {
         soft: "14px",
         xl2: "20px",
       },
-
       boxShadow: {
         smooth: "0 8px 22px rgba(0,0,0,0.06)",
         soft: "0 4px 14px rgba(0,0,0,0.04)",
       },
-
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
     },
   },
-
   plugins: [],
 };
